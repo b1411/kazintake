@@ -4,6 +4,6 @@
       name="i-lucide-graduation-cap"
       class="size-6 text-primary"
     />
-    <span>SkillPass</span>
+    <span>KazInTake</span>
   </span>
 </template>

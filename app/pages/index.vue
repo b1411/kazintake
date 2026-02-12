@@ -29,7 +29,7 @@ if (import.meta.client && isAuthenticated.value) {
 
     <UMain>
       <UPageHero
-        title="SkillPass"
+        title="KazInTake"
         description="Специализированная LMS-платформа для корпоративного обучения с быстрым предоставлением доступов обучающимся."
         :links="[{
           label: 'Войти в систему',
@@ -88,7 +88,7 @@ if (import.meta.client && isAuthenticated.value) {
     <UFooter>
       <template #left>
         <p class="text-sm text-muted">
-          SkillPass © {{ new Date().getFullYear() }} — Платформа корпоративного обучения
+          KazInTake © {{ new Date().getFullYear() }} — Платформа корпоративного обучения
         </p>
       </template>
       <template #right>
