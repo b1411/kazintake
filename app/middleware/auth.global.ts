@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const { isAuthenticated, isAdmin, isStudent } = useMockAuth()
 
   // Публичные страницы
-  const publicPages = ['/login', '/']
+  const publicPages = ['/login', '/', '/about', '/programs']
   if (publicPages.includes(to.path)) return
 
   // Не авторизован — на логин

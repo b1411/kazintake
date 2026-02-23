@@ -3,4 +3,16 @@
 
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
+
+  --color-kazblue-50: #eef4fb;
+  --color-kazblue-100: #d5e4f6;
+  --color-kazblue-200: #aec8ed;
+  --color-kazblue-300: #82a8e0;
+  --color-kazblue-400: #4f7fd0;
+  --color-kazblue-500: #1548ad;
+  --color-kazblue-600: #123d93;
+  --color-kazblue-700: #0e3279;
+  --color-kazblue-800: #0b275f;
+  --color-kazblue-900: #071d48;
+  --color-kazblue-950: #041130;
 }
