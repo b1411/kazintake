@@ -191,6 +191,25 @@ const navLinks = [
 
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-950">
+    <!-- Gov Links Bar -->
+    <div class="bg-gray-900 dark:bg-gray-950 border-b border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-8 text-xs">
+          <div class="hidden sm:flex items-center gap-4">
+            <a href="https://egov.kz" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">eGov.kz</a>
+            <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. просвещения</a>
+            <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. здравоохранения</a>
+            <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. труда</a>
+            <a href="https://www.gov.kz/memleket/entities/emer" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">МЧС РК</a>
+          </div>
+          <div class="flex items-center gap-3 text-gray-400 sm:ml-auto">
+            <UIcon name="i-lucide-phone" class="size-3" />
+            <a href="tel:+77719292212" class="hover:text-white transition-colors">+7 (771) 929-22-12</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -247,8 +266,8 @@ const navLinks = [
           alt=""
           class="absolute inset-0 w-full h-full object-cover"
         >
-        <div class="absolute inset-0 bg-black/40" />
-        <div class="absolute inset-0 bg-linear-to-b from-black/20 to-black/50" />
+        <div class="absolute inset-0 bg-kazblue-950/60" />
+        <div class="absolute inset-0 bg-linear-to-b from-kazblue-900/30 to-kazblue-950/70" />
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
             Программы обучения
@@ -443,20 +462,42 @@ const navLinks = [
 
     <!-- Footer -->
     <footer class="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-2">
-            <UIcon
-              name="i-lucide-graduation-cap"
-              class="size-5 text-primary"
-            />
-            <span class="font-semibold">KAZINTAKE&amp;SERVICE</span>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid sm:grid-cols-3 gap-8 mb-8">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <UIcon name="i-lucide-graduation-cap" class="size-5 text-primary" />
+              <span class="font-bold">KAZINTAKE&amp;SERVICE</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              Квалификационная Комиссия, предоставляющая услуги по обеспечению безопасности и охраны труда в организациях Республики Казахстан.
+            </p>
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            &copy; {{ new Date().getFullYear() }} KAZINTAKE&amp;SERVICE — Квалификационная Комиссия
+          <div>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Гос. ресурсы</h4>
+            <div class="space-y-2 text-sm">
+              <a href="https://egov.kz" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">eGov.kz</a>
+              <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство просвещения РК</a>
+              <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство здравоохранения РК</a>
+              <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство труда и соцзащиты РК</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Лицензии и права</h4>
+            <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <p>Деятельность осуществляется в соответствии с законодательством РК</p>
+              <p>Сертификаты и удостоверения государственного образца</p>
+            </div>
+          </div>
+        </div>
+        <USeparator />
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+          <p class="text-xs text-gray-400 dark:text-gray-500">
+            &copy; {{ new Date().getFullYear() }} KAZINTAKE&amp;SERVICE. Все права защищены.
           </p>
-          <div class="flex items-center gap-2">
-            <UColorModeButton />
+          <div class="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
+            <span>ИИН/БИН организации</span>
+            <UColorModeButton size="xs" />
           </div>
         </div>
       </div>

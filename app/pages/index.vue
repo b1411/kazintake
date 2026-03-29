@@ -80,10 +80,67 @@ const navLinks = [
   { label: 'Платформа', to: '#platform' },
   { label: 'Контакты', to: '#contacts' }
 ]
+
+const reviews = [
+  {
+    name: 'Асылбек Тулегенов',
+    role: 'Директор, ТОО «СтройМонтажГрупп»',
+    text: 'Благодаря KAZINTAKE&SERVICE наши сотрудники прошли обучение по охране труда и пожарной безопасности в кратчайшие сроки. Удобная платформа и профессиональный подход.',
+    rating: 5
+  },
+  {
+    name: 'Гульнара Сабитова',
+    role: 'HR-директор, АО «ПромТехСервис»',
+    text: 'Организовали обучение для 150 сотрудников по нескольким направлениям. Всё чётко, в срок, с выдачей документов государственного образца. Рекомендуем!',
+    rating: 5
+  },
+  {
+    name: 'Марат Ибрагимов',
+    role: 'Руководитель отдела ОТ, ТОО «KazOil Services»',
+    text: 'Сотрудничаем уже второй год. Отличное качество материалов, удобная система тестирования. Сертификаты принимаются всеми проверяющими органами.',
+    rating: 5
+  },
+  {
+    name: 'Айгуль Нурланова',
+    role: 'Заведующая, Детский сад №47 г. Алматы',
+    text: 'Прошли гигиеническое обучение и курсы по антитерроризму. Всё организовано на высшем уровне, преподаватели отвечают на все вопросы.',
+    rating: 5
+  }
+]
+
+const partners = [
+  'ТОО «СтройМонтажГрупп»',
+  'АО «ПромТехСервис»',
+  'ТОО «KazOil Services»',
+  'АО «Алматы Су»',
+  'ТОО «MegaStroy»',
+  'АО «КазТрансОйл»',
+  'ТОО «ТехноСервис Групп»',
+  'АО «Казахтелеком»'
+]
 </script>
 
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-950">
+    <!-- Gov Links Bar -->
+    <div class="bg-gray-900 dark:bg-gray-950 border-b border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-8 text-xs">
+          <div class="hidden sm:flex items-center gap-4">
+            <a href="https://egov.kz" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">eGov.kz</a>
+            <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. просвещения</a>
+            <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. здравоохранения</a>
+            <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. труда</a>
+            <a href="https://www.gov.kz/memleket/entities/emer" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">МЧС РК</a>
+          </div>
+          <div class="flex items-center gap-3 text-gray-400 sm:ml-auto">
+            <UIcon name="i-lucide-phone" class="size-3" />
+            <a href="tel:+77719292212" class="hover:text-white transition-colors">+7 (771) 929-22-12</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -126,8 +183,8 @@ const navLinks = [
           alt=""
           class="absolute inset-0 w-full h-full object-cover"
         >
-        <div class="absolute inset-0 bg-black/40" />
-        <div class="absolute inset-0 bg-linear-to-b from-black/20 to-black/50" />
+        <div class="absolute inset-0 bg-kazblue-950/60" />
+        <div class="absolute inset-0 bg-linear-to-b from-kazblue-900/30 to-kazblue-950/70" />
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32">
           <div class="text-center max-w-4xl mx-auto">
@@ -141,8 +198,13 @@ const navLinks = [
               <span class="text-white/70">&amp;</span>SERVICE
             </h1>
 
-            <p class="mt-6 text-lg sm:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-              Квалификационная Комиссия, предоставляющая услуги по обеспечению безопасности и охраны труда, пожарной безопасности, гигиенического обучения, противодействию терроризму в организациях Республики Казахстан.
+            <p class="mt-6 text-lg sm:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+              <span class="font-semibold text-white">Квалификационная Комиссия</span>, предоставляющая услуги по обеспечению
+              <span class="border-b border-white/40">безопасности и охраны труда</span>,
+              <span class="border-b border-white/40">пожарной безопасности</span>,
+              <span class="border-b border-white/40">гигиенического обучения</span>,
+              <span class="border-b border-white/40">противодействию терроризму</span>
+              в организациях Республики Казахстан.
             </p>
 
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -325,6 +387,109 @@ const navLinks = [
         }]"
       />
 
+      <!-- Reviews -->
+      <section class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <p class="text-sm font-semibold text-primary mb-2">Отзывы</p>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+              Что говорят наши клиенты
+            </h2>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">
+              Более 1000 специалистов прошли обучение в нашей Квалификационной Комиссии.
+            </p>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div
+              v-for="review in reviews"
+              :key="review.name"
+              class="p-6 bg-white dark:bg-gray-950 rounded-2xl border border-gray-200 dark:border-gray-800"
+            >
+              <div class="flex items-center gap-1 mb-4">
+                <UIcon
+                  v-for="i in review.rating"
+                  :key="i"
+                  name="i-lucide-star"
+                  class="size-4 text-amber-400"
+                />
+              </div>
+              <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-5">
+                «{{ review.text }}»
+              </p>
+              <div class="flex items-center gap-3">
+                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span class="text-sm font-bold text-primary">{{ review.name.charAt(0) }}</span>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ review.name }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ review.role }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Благодарственные письма -->
+      <section class="py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <p class="text-sm font-semibold text-primary mb-2">Благодарности</p>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+              Благодарственные письма
+            </h2>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">
+              Нам доверяют организации по всему Казахстану.
+            </p>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div
+              v-for="i in 3"
+              :key="i"
+              class="group relative aspect-[3/4] rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center gap-3 hover:border-primary/50 transition-colors"
+            >
+              <div class="size-14 rounded-xl bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
+                <UIcon name="i-lucide-file-text" class="size-7 text-gray-400 dark:text-gray-500" />
+              </div>
+              <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">Благодарственное письмо {{ i }}</p>
+              <p class="text-xs text-gray-400 dark:text-gray-600">Скоро будет добавлено</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Partners -->
+      <section class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <p class="text-sm font-semibold text-primary mb-2">Партнёры</p>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+              С нами работают
+            </h2>
+            <p class="mt-4 text-gray-600 dark:text-gray-400">
+              Компании и организации, которые выбрали KAZINTAKE&amp;SERVICE.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div
+              v-for="partner in partners"
+              :key="partner"
+              class="p-5 bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-800 flex items-center justify-center text-center"
+            >
+              <div>
+                <div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                  <UIcon name="i-lucide-building-2" class="size-5 text-primary" />
+                </div>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ partner }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- CTA -->
       <section class="py-16 sm:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -402,17 +567,42 @@ const navLinks = [
 
     <!-- Footer -->
     <footer class="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-2">
-            <UIcon name="i-lucide-graduation-cap" class="size-5 text-primary" />
-            <span class="font-semibold">KAZINTAKE&amp;SERVICE</span>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid sm:grid-cols-3 gap-8 mb-8">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <UIcon name="i-lucide-graduation-cap" class="size-5 text-primary" />
+              <span class="font-bold">KAZINTAKE&amp;SERVICE</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+              Квалификационная Комиссия, предоставляющая услуги по обеспечению безопасности и охраны труда в организациях Республики Казахстан.
+            </p>
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            &copy; {{ new Date().getFullYear() }} KAZINTAKE&amp;SERVICE — Квалификационная Комиссия
+          <div>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Гос. ресурсы</h4>
+            <div class="space-y-2 text-sm">
+              <a href="https://egov.kz" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">eGov.kz</a>
+              <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство просвещения РК</a>
+              <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство здравоохранения РК</a>
+              <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство труда и соцзащиты РК</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Лицензии и права</h4>
+            <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <p>Деятельность осуществляется в соответствии с законодательством РК</p>
+              <p>Сертификаты и удостоверения государственного образца</p>
+            </div>
+          </div>
+        </div>
+        <USeparator />
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+          <p class="text-xs text-gray-400 dark:text-gray-500">
+            &copy; {{ new Date().getFullYear() }} KAZINTAKE&amp;SERVICE. Все права защищены.
           </p>
-          <div class="flex items-center gap-2">
-            <UColorModeButton />
+          <div class="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
+            <span>ИИН/БИН организации</span>
+            <UColorModeButton size="xs" />
           </div>
         </div>
       </div>
