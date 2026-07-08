@@ -13,7 +13,7 @@ const enrollmentsCount = computed(() =>
 const stats = computed(() => [
   { label: 'Курсов', value: courses.value.length, icon: 'i-lucide-book-open', color: 'text-primary' },
   { label: 'Тестов', value: tests.value.length, icon: 'i-lucide-clipboard-check', color: 'text-success' },
-  { label: 'Курсантов', value: participants.value.length, icon: 'i-lucide-users', color: 'text-warning' },
+  { label: 'Обучающихся', value: participants.value.length, icon: 'i-lucide-users', color: 'text-warning' },
   { label: 'Записей на курсы', value: enrollmentsCount.value, icon: 'i-lucide-link', color: 'text-info' }
 ])
 </script>
@@ -57,7 +57,7 @@ const stats = computed(() => [
         <UButton
           to="/admin/students"
           icon="i-lucide-user-plus"
-          label="Добавить курсанта"
+          label="Добавить обучающегося"
           color="warning"
         />
         <UButton

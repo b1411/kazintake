@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware((to) => {
     return navigateTo('/student/dashboard')
   }
 
-  // /student/* — только курсант
+  // /student/* — только обучающийся
   if (to.path.startsWith('/student') && user.value?.role !== 'participant') {
     return navigateTo('/admin')
   }

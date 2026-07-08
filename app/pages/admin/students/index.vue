@@ -2,7 +2,7 @@
 import { h, resolveComponent } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
 
-definePageMeta({ layout: 'admin', title: 'Курсанты' })
+definePageMeta({ layout: 'admin', title: 'Обучающиеся' })
 
 interface ParticipantRow { id: number, fullName: string, phone: string, createdAt: string, courseIds: number[] }
 interface CourseRow { id: number, title: string }
@@ -45,7 +45,7 @@ const columns: TableColumn<ParticipantRow>[] = [
 async function handleDelete(id: number) {
   await $fetch(`/api/admin/participants/${id}`, { method: 'DELETE' })
   await refresh()
-  toast.add({ title: 'Курсант удалён', color: 'success', icon: 'i-lucide-check-circle' })
+  toast.add({ title: 'Обучающийся удалён', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
 async function handleAdd() {
@@ -61,7 +61,7 @@ async function handleAdd() {
     form.courseIds = []
     showAddModal.value = false
     await refresh()
-    toast.add({ title: 'Курсант добавлен', color: 'success', icon: 'i-lucide-check-circle' })
+    toast.add({ title: 'Обучающийся добавлен', color: 'success', icon: 'i-lucide-check-circle' })
   } catch (e) {
     const err = e as { data?: { statusMessage?: string } }
     addError.value = err.data?.statusMessage || 'Ошибка добавления'
@@ -73,11 +73,11 @@ async function handleAdd() {
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-semibold">
-        Все курсанты ({{ participants.length }})
+        Все обучающиеся ({{ participants.length }})
       </h2>
       <UButton
         icon="i-lucide-user-plus"
-        label="Добавить курсанта"
+        label="Добавить обучающегося"
         @click="showAddModal = true"
       />
     </div>
@@ -90,7 +90,7 @@ async function handleAdd() {
 
     <UModal
       v-model:open="showAddModal"
-      title="Новый курсант"
+      title="Новый обучающийся"
       description="ФИО, телефон и курсы для записи"
     >
       <template #body>

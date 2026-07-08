@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Неверный телефон или PIN' })
   }
 
-  // Курсы, на которые записан курсант
+  // Курсы, на которые записан обучающийся
   const enrolled = await db.select().from(enrollments)
     .where(eq(enrollments.participantId, participant.id))
 
-  // PIN должен совпасть с текущим кодом хотя бы одного из курсов курсанта
+  // PIN должен совпасть с текущим кодом хотя бы одного из курсов обучающегося
   let matched = false
   for (const e of enrolled) {
     const p = await getOrCreateCurrentPin(e.courseId)

@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   const existing = (await db.select().from(participants).where(eq(participants.phone, phone)))[0]
   if (existing) {
-    throw createError({ statusCode: 409, statusMessage: 'Курсант с таким телефоном уже есть' })
+    throw createError({ statusCode: 409, statusMessage: 'Обучающийся с таким телефоном уже есть' })
   }
 
   const [participant] = await db.insert(participants)

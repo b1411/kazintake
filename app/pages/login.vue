@@ -13,7 +13,7 @@ const pin = ref('')
 const password = ref('')
 
 const modeItems = [
-  { label: 'Курсант', value: 'participant' as const },
+  { label: 'Обучающийся', value: 'participant' as const },
   { label: 'Администратор', value: 'admin' as const }
 ]
 

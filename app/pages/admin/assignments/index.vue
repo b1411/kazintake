@@ -41,7 +41,7 @@ async function handleAssign() {
   selectedCourseId.value = undefined
   showModal.value = false
   await refresh()
-  toast.add({ title: 'Курсант записан', color: 'success', icon: 'i-lucide-check-circle' })
+  toast.add({ title: 'Обучающийся записан', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
 async function handleRemove(participantId: number, courseId: number) {
@@ -94,7 +94,7 @@ async function handleRemove(participantId: number, courseId: number) {
               </p>
             </div>
             <UBadge variant="subtle">
-              {{ row.members.length }} курсантов
+              {{ row.members.length }} обучающихся
             </UBadge>
           </div>
 
@@ -131,19 +131,19 @@ async function handleRemove(participantId: number, courseId: number) {
 
     <UModal
       v-model:open="showModal"
-      title="Записать курсанта на курс"
-      description="Выберите курсанта и курс"
+      title="Записать обучающегося на курс"
+      description="Выберите обучающегося и курс"
     >
       <template #body>
         <div class="space-y-4">
           <UFormField
-            label="Курсант"
+            label="Обучающийся"
             required
           >
             <USelect
               v-model="selectedParticipantId"
               :items="participantOptions"
-              placeholder="Выберите курсанта"
+              placeholder="Выберите обучающегося"
               class="w-full"
             />
           </UFormField>

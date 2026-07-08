@@ -9,11 +9,11 @@ export async function requireAdmin(event: H3Event) {
   return user
 }
 
-// Требовать сессию курсанта; вернуть participantId.
+// Требовать сессию обучающегося; вернуть participantId.
 export async function requireParticipant(event: H3Event) {
   const { user } = await requireUserSession(event)
   if (user.role !== 'participant' || !user.participantId) {
-    throw createError({ statusCode: 403, statusMessage: 'Только для курсанта' })
+    throw createError({ statusCode: 403, statusMessage: 'Только для обучающегося' })
   }
   return { participantId: user.participantId, name: user.name }
 }

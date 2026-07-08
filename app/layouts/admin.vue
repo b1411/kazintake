@@ -22,7 +22,7 @@ const navItems: NavigationMenuItem[][] = [
       to: '/admin/tests'
     },
     {
-      label: 'Курсанты',
+      label: 'Обучающиеся',
       icon: 'i-lucide-users',
       to: '/admin/students'
     },
