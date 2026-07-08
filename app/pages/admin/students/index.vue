@@ -67,6 +67,38 @@ async function handleAdd() {
     addError.value = err.data?.statusMessage || 'Ошибка добавления'
   }
 }
+
+// --- Массовый импорт ---
+const showImportModal = ref(false)
+const importText = ref('')
+const importCourseIds = ref<number[]>([])
+const importing = ref(false)
+
+async function handleImport() {
+  if (!importText.value.trim()) return
+  importing.value = true
+  try {
+    const res = await $fetch<{ addedCount: number, skipped: string[], invalid: string[] }>(
+      '/api/admin/participants/bulk',
+      { method: 'POST', body: { text: importText.value, courseIds: importCourseIds.value } }
+    )
+    importText.value = ''
+    importCourseIds.value = []
+    showImportModal.value = false
+    await refresh()
+    const notes: string[] = []
+    if (res.skipped.length) notes.push(`пропущено (дубли): ${res.skipped.length}`)
+    if (res.invalid.length) notes.push(`ошибок в строках: ${res.invalid.length}`)
+    toast.add({
+      title: `Добавлено: ${res.addedCount}`,
+      description: notes.join(' • ') || undefined,
+      color: 'success',
+      icon: 'i-lucide-check-circle'
+    })
+  } finally {
+    importing.value = false
+  }
+}
 </script>
 
 <template>
@@ -75,11 +107,20 @@ async function handleAdd() {
       <h2 class="text-xl font-semibold">
         Все обучающиеся ({{ participants.length }})
       </h2>
-      <UButton
-        icon="i-lucide-user-plus"
-        label="Добавить обучающегося"
-        @click="showAddModal = true"
-      />
+      <div class="flex gap-2">
+        <UButton
+          icon="i-lucide-upload"
+          label="Импорт списком"
+          color="neutral"
+          variant="outline"
+          @click="showImportModal = true"
+        />
+        <UButton
+          icon="i-lucide-user-plus"
+          label="Добавить обучающегося"
+          @click="showAddModal = true"
+        />
+      </div>
     </div>
 
     <UTable
@@ -159,6 +200,59 @@ async function handleAdd() {
             label="Добавить"
             icon="i-lucide-user-plus"
             @click="handleAdd"
+          />
+        </div>
+      </template>
+    </UModal>
+
+    <UModal
+      v-model:open="showImportModal"
+      title="Импорт обучающихся списком"
+      description="По одной строке на человека"
+    >
+      <template #body>
+        <div class="space-y-4">
+          <UFormField
+            label="Список: ФИО, телефон (по строке)"
+            required
+          >
+            <UTextarea
+              v-model="importText"
+              :rows="8"
+              class="w-full font-mono text-sm"
+              placeholder="Иванов Иван Иванович, +7 777 000 0001
+Петров Пётр Петрович, +7 777 000 0002"
+            />
+          </UFormField>
+          <p class="text-xs text-muted">
+            Разделитель между ФИО и телефоном — запятая, точка с запятой или Tab.
+            Дубли по телефону пропускаются.
+          </p>
+          <UFormField label="Записать всех на курсы">
+            <USelectMenu
+              v-model="importCourseIds"
+              :items="courseOptions"
+              value-key="value"
+              multiple
+              placeholder="Выберите курсы"
+              class="w-full"
+            />
+          </UFormField>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <UButton
+            label="Отмена"
+            color="neutral"
+            variant="outline"
+            @click="showImportModal = false"
+          />
+          <UButton
+            label="Импортировать"
+            icon="i-lucide-upload"
+            :loading="importing"
+            @click="handleImport"
           />
         </div>
       </template>
