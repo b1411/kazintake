@@ -1,31 +1,30 @@
 <script setup lang="ts">
 import { h, resolveComponent } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
-import type { Course } from '~/composables/useMockData'
 
 definePageMeta({ layout: 'admin', title: 'Курсы' })
+
+interface CourseRow {
+  id: number
+  title: string
+  description: string
+  createdAt: string
+  materials: unknown[]
+  testId: number | null
+}
 
 const UBadge = resolveComponent('UBadge')
 const UButton = resolveComponent('UButton')
 
-const { courses, tests, deleteCourse } = useMockData()
 const toast = useToast()
+const { data: courses, refresh } = await useFetch<CourseRow[]>('/api/admin/courses', { default: () => [] })
 
 const showAddModal = ref(false)
-const newCourse = reactive({
-  title: '',
-  description: ''
-})
+const newCourse = reactive({ title: '', description: '' })
 
-const columns: TableColumn<Course>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID'
-  },
-  {
-    accessorKey: 'title',
-    header: 'Название'
-  },
+const columns: TableColumn<CourseRow>[] = [
+  { accessorKey: 'id', header: 'ID' },
+  { accessorKey: 'title', header: 'Название' },
   {
     accessorKey: 'description',
     header: 'Описание',
@@ -39,68 +38,45 @@ const columns: TableColumn<Course>[] = [
     header: 'Тест',
     cell: ({ row }) => {
       const testId = row.getValue('testId') as number | null
-      if (testId) {
-        const test = tests.value.find(t => t.id === testId)
-        return h(UBadge, { color: 'success', variant: 'subtle' }, () => test?.title || `Тест #${testId}`)
-      }
-      return h(UBadge, { color: 'neutral', variant: 'subtle' }, () => 'Нет теста')
+      return testId
+        ? h(UBadge, { color: 'success', variant: 'subtle' }, () => 'Есть')
+        : h(UBadge, { color: 'neutral', variant: 'subtle' }, () => 'Нет теста')
     }
   },
   {
     accessorKey: 'materials',
     header: 'Материалы',
-    cell: ({ row }) => {
-      const materials = row.getValue('materials') as Course['materials']
-      return `${materials.length} шт.`
-    }
-  },
-  {
-    accessorKey: 'createdAt',
-    header: 'Дата создания'
+    cell: ({ row }) => `${(row.getValue('materials') as unknown[]).length} шт.`
   },
   {
     id: 'actions',
     header: '',
-    cell: ({ row }) => {
-      return h('div', { class: 'flex gap-1' }, [
-        h(UButton, {
-          icon: 'i-lucide-pencil',
-          color: 'neutral',
-          variant: 'ghost',
-          size: 'xs',
-          square: true,
-          to: `/admin/courses/${row.original.id}`
-        }),
-        h(UButton, {
-          icon: 'i-lucide-trash-2',
-          color: 'error',
-          variant: 'ghost',
-          size: 'xs',
-          square: true,
-          onClick: () => handleDelete(row.original.id)
-        })
-      ])
-    }
+    cell: ({ row }) => h('div', { class: 'flex gap-1' }, [
+      h(UButton, {
+        icon: 'i-lucide-pencil', color: 'neutral', variant: 'ghost', size: 'xs', square: true,
+        to: `/admin/courses/${row.original.id}`
+      }),
+      h(UButton, {
+        icon: 'i-lucide-trash-2', color: 'error', variant: 'ghost', size: 'xs', square: true,
+        onClick: () => handleDelete(row.original.id)
+      })
+    ])
   }
 ]
 
-function handleDelete(id: number) {
-  deleteCourse(id)
+async function handleDelete(id: number) {
+  await $fetch(`/api/admin/courses/${id}`, { method: 'DELETE' })
+  await refresh()
   toast.add({ title: 'Курс удалён', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
-function handleAdd() {
+async function handleAdd() {
   if (!newCourse.title.trim()) return
-  const { addCourse } = useMockData()
-  addCourse({
-    title: newCourse.title,
-    description: newCourse.description,
-    materials: [],
-    testId: null
-  })
+  await $fetch('/api/admin/courses', { method: 'POST', body: { ...newCourse } })
   newCourse.title = ''
   newCourse.description = ''
   showAddModal.value = false
+  await refresh()
   toast.add({ title: 'Курс создан', color: 'success', icon: 'i-lucide-check-circle' })
 }
 </script>

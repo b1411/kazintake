@@ -8,20 +8,30 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx --env-file=.env server/db/migrate.ts",
+    "db:seed": "tsx --env-file=.env server/db/seed.ts"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.87",
     "@iconify-json/simple-icons": "^1.2.68",
+    "@libsql/client": "^0.17.4",
     "@nuxt/ui": "^4.4.0",
     "@tailwindcss/vite": "^4.1.18",
+    "drizzle-orm": "^0.45.2",
     "nuxt": "^4.3.0",
+    "nuxt-auth-utils": "^0.5.29",
     "tailwindcss": "^4.1.18",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.13.0",
+    "@types/adm-zip": "^0.5.8",
+    "adm-zip": "^0.5.18",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.2",
+    "tsx": "^4.23.0",
     "typescript": "^5.9.3",
     "vue-tsc": "^3.2.4"
   },

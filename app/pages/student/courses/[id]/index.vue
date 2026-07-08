@@ -1,19 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'student', title: 'Курс' })
 
+interface Material { id: number, type: 'text' | 'pdf' | 'video', title: string, content: string }
+interface CourseDetail { id: number, title: string, description: string, materials: Material[], testId: number | null }
+interface MyCourse { id: number, result: { score: number, total: number, passed: boolean } | null }
+
 const route = useRoute()
 const courseId = Number(route.params.id)
-const { user } = useMockAuth()
-const { getCourse, getTestByCourse, getResultForStudentCourse } = useMockData()
 
-const course = computed(() => getCourse(courseId))
-const test = computed(() => getTestByCourse(courseId))
-const result = computed(() => {
-  if (!user.value) return null
-  return getResultForStudentCourse(user.value.id, courseId)
-})
+const { data: course } = await useFetch<CourseDetail>(`/api/courses/${courseId}`)
+const { data: myCourses } = await useFetch<MyCourse[]>('/api/my/courses', { default: () => [] })
 
-const activeTab = ref('content')
+const result = computed(() => myCourses.value.find(c => c.id === courseId)?.result ?? null)
 
 function materialIcon(type: string) {
   switch (type) {
@@ -24,7 +22,6 @@ function materialIcon(type: string) {
   }
 }
 
-// Развернутый материал
 const expandedMaterial = ref<number | null>(null)
 function toggleMaterial(id: number) {
   expandedMaterial.value = expandedMaterial.value === id ? null : id
@@ -47,7 +44,6 @@ function toggleMaterial(id: number) {
     v-else
     class="space-y-6"
   >
-    <!-- Навигация -->
     <div class="flex items-center gap-2">
       <UButton
         to="/student/dashboard"
@@ -58,7 +54,6 @@ function toggleMaterial(id: number) {
       />
     </div>
 
-    <!-- Заголовок -->
     <div>
       <h2 class="text-2xl font-bold">
         {{ course.title }}
@@ -68,11 +63,17 @@ function toggleMaterial(id: number) {
       </p>
     </div>
 
-    <!-- Материалы курса -->
     <div class="space-y-3">
       <h3 class="font-semibold text-lg">
         Материалы курса
       </h3>
+
+      <div
+        v-if="course.materials.length === 0"
+        class="text-muted text-sm"
+      >
+        Материалы ещё не добавлены.
+      </div>
 
       <UCard
         v-for="material in course.materials"
@@ -104,14 +105,12 @@ function toggleMaterial(id: number) {
           <div v-if="expandedMaterial === material.id">
             <USeparator class="my-3" />
 
-            <!-- Текстовый контент -->
             <div
               v-if="material.type === 'text'"
               class="prose dark:prose-invert max-w-none"
               v-html="material.content"
             />
 
-            <!-- PDF -->
             <div
               v-else-if="material.type === 'pdf'"
               class="space-y-2"
@@ -128,7 +127,6 @@ function toggleMaterial(id: number) {
               />
             </div>
 
-            <!-- Видео -->
             <div
               v-else-if="material.type === 'video'"
               class="space-y-2"
@@ -148,9 +146,8 @@ function toggleMaterial(id: number) {
       </UCard>
     </div>
 
-    <!-- Блок аттестации -->
     <UCard
-      v-if="test"
+      v-if="course.testId"
       class="border-primary/30"
     >
       <template #header>
@@ -166,7 +163,6 @@ function toggleMaterial(id: number) {
       </template>
 
       <div class="space-y-3">
-        <p>{{ test.title }} — {{ test.questions.length }} вопросов</p>
         <p class="text-sm text-muted">
           Для прохождения необходимо набрать не менее 70% правильных ответов.
         </p>

@@ -1,18 +1,16 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'student', title: 'Прохождение теста' })
 
+interface Q { id: number, text: string, options: string[] }
+interface TestData { id: number, title: string, questions: Q[] }
+
 const route = useRoute()
 const courseId = Number(route.params.id)
-const { user } = useMockAuth()
-const { getCourse, getTestByCourse, submitTestResult } = useMockData()
 const toast = useToast()
 
-const course = computed(() => getCourse(courseId))
-const test = computed(() => getTestByCourse(courseId))
+const { data: test } = await useFetch<TestData>(`/api/courses/${courseId}/test`)
 
-// Ответы пользователя: index вопроса → index выбранного варианта
 const answers = ref<Record<number, number>>({})
-
 const currentQuestion = ref(0)
 const isSubmitting = ref(false)
 
@@ -25,28 +23,22 @@ const correctLabels = ['A', 'B', 'C', 'D']
 function selectAnswer(questionIndex: number, optionIndex: number) {
   answers.value[questionIndex] = optionIndex
 }
-
 function goNext() {
-  if (currentQuestion.value < totalQuestions.value - 1) {
-    currentQuestion.value++
-  }
+  if (currentQuestion.value < totalQuestions.value - 1) currentQuestion.value++
 }
-
 function goPrev() {
-  if (currentQuestion.value > 0) {
-    currentQuestion.value--
-  }
+  if (currentQuestion.value > 0) currentQuestion.value--
 }
 
 async function handleSubmit() {
-  if (!user.value || !test.value) return
+  if (!test.value) return
   isSubmitting.value = true
-
-  // Формируем массив ответов по порядку вопросов
-  const answersArray = test.value.questions.map((_, i) => answers.value[i] ?? -1)
-  const result = submitTestResult(user.value.id, courseId, test.value.id, answersArray)
-
-  if (result) {
+  try {
+    const answersArray = test.value.questions.map((_, i) => answers.value[i] ?? -1)
+    const result = await $fetch<{ score: number, total: number, passed: boolean }>(
+      `/api/courses/${courseId}/test/submit`,
+      { method: 'POST', body: { answers: answersArray } }
+    )
     toast.add({
       title: result.passed ? 'Тест сдан!' : 'Тест не сдан',
       description: `Результат: ${result.score} из ${result.total}`,
@@ -54,14 +46,15 @@ async function handleSubmit() {
       icon: result.passed ? 'i-lucide-check-circle' : 'i-lucide-x-circle'
     })
     await navigateTo(`/student/courses/${courseId}/result`)
+  } finally {
+    isSubmitting.value = false
   }
-  isSubmitting.value = false
 }
 </script>
 
 <template>
   <div
-    v-if="!course || !test"
+    v-if="!test"
     class="flex items-center justify-center h-64"
   >
     <UAlert
@@ -75,7 +68,6 @@ async function handleSubmit() {
     v-else
     class="space-y-6 max-w-3xl mx-auto"
   >
-    <!-- Навигация -->
     <div class="flex items-center gap-2">
       <UButton
         :to="`/student/courses/${courseId}`"
@@ -86,7 +78,6 @@ async function handleSubmit() {
       />
     </div>
 
-    <!-- Заголовок теста -->
     <div class="space-y-2">
       <h2 class="text-xl font-bold">
         {{ test.title }}
@@ -101,11 +92,10 @@ async function handleSubmit() {
       </div>
     </div>
 
-    <!-- Навигация по вопросам -->
     <div class="flex flex-wrap gap-2">
       <UButton
         v-for="(q, qi) in test.questions"
-        :key="qi"
+        :key="q.id"
         :label="`${qi + 1}`"
         :color="answers[qi] !== undefined ? 'primary' : 'neutral'"
         :variant="currentQuestion === qi ? 'solid' : (answers[qi] !== undefined ? 'subtle' : 'outline')"
@@ -115,7 +105,6 @@ async function handleSubmit() {
       />
     </div>
 
-    <!-- Текущий вопрос -->
     <UCard>
       <div class="space-y-4">
         <p class="font-medium text-lg">
@@ -135,9 +124,7 @@ async function handleSubmit() {
           >
             <span
               class="flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold shrink-0"
-              :class="answers[currentQuestion] === oi
-                ? 'bg-primary text-white'
-                : 'bg-muted/50 text-muted'"
+              :class="answers[currentQuestion] === oi ? 'bg-primary text-white' : 'bg-muted/50 text-muted'"
             >
               {{ correctLabels[oi] }}
             </span>
@@ -173,7 +160,6 @@ async function handleSubmit() {
       </div>
     </UCard>
 
-    <!-- Предупреждение -->
     <UAlert
       v-if="!allAnswered"
       color="warning"

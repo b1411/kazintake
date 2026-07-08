@@ -39,7 +39,7 @@ const values = [
   }
 ]
 
-const team = [
+const _team = [
   {
     name: 'Курмансеитов Ермек',
     role: 'Директор',
@@ -55,15 +55,46 @@ const team = [
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-8 text-xs">
           <div class="hidden sm:flex items-center gap-4">
-            <a href="https://egov.kz" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">eGov.kz</a>
-            <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. просвещения</a>
-            <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. здравоохранения</a>
-            <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. труда</a>
-            <a href="https://www.gov.kz/memleket/entities/emer" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">МЧС РК</a>
+            <a
+              href="https://egov.kz"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >eGov.kz</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/edu"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >Мин. просвещения</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/dsm"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >Мин. здравоохранения</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/enbek"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >Мин. труда</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/emer"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >МЧС РК</a>
           </div>
           <div class="flex items-center gap-3 text-gray-400 sm:ml-auto">
-            <UIcon name="i-lucide-phone" class="size-3" />
-            <a href="tel:+77719292212" class="hover:text-white transition-colors">+7 (771) 929-22-12</a>
+            <UIcon
+              name="i-lucide-phone"
+              class="size-3"
+            />
+            <a
+              href="tel:+77719292212"
+              class="hover:text-white transition-colors"
+            >+7 (771) 929-22-12</a>
           </div>
         </div>
       </div>
@@ -386,7 +417,10 @@ const team = [
         <div class="grid sm:grid-cols-3 gap-8 mb-8">
           <div>
             <div class="flex items-center gap-2 mb-3">
-              <UIcon name="i-lucide-graduation-cap" class="size-5 text-primary" />
+              <UIcon
+                name="i-lucide-graduation-cap"
+                class="size-5 text-primary"
+              />
               <span class="font-bold">KAZINTAKE&amp;SERVICE</span>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -394,16 +428,40 @@ const team = [
             </p>
           </div>
           <div>
-            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Гос. ресурсы</h4>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">
+              Гос. ресурсы
+            </h4>
             <div class="space-y-2 text-sm">
-              <a href="https://egov.kz" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">eGov.kz</a>
-              <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство просвещения РК</a>
-              <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство здравоохранения РК</a>
-              <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство труда и соцзащиты РК</a>
+              <a
+                href="https://egov.kz"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >eGov.kz</a>
+              <a
+                href="https://www.gov.kz/memleket/entities/edu"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >Министерство просвещения РК</a>
+              <a
+                href="https://www.gov.kz/memleket/entities/dsm"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >Министерство здравоохранения РК</a>
+              <a
+                href="https://www.gov.kz/memleket/entities/enbek"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >Министерство труда и соцзащиты РК</a>
             </div>
           </div>
           <div>
-            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Лицензии и права</h4>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">
+              Лицензии и права
+            </h4>
             <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
               <p>Деятельность осуществляется в соответствии с законодательством РК</p>
               <p>Сертификаты и удостоверения государственного образца</p>

@@ -1,31 +1,35 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'admin', title: 'Редактор курса' })
 
+interface Material { id: number, type: 'text' | 'pdf' | 'video', title: string, content: string, sort: number }
+interface CourseDetail {
+  id: number
+  title: string
+  description: string
+  materials: Material[]
+  test: { id: number, title: string, questions: unknown[] } | null
+}
+
 const route = useRoute()
 const toast = useToast()
 const courseId = Number(route.params.id)
 
-const { getCourse, updateCourse, getTestByCourse } = useMockData()
+const { data: course, refresh } = await useFetch<CourseDetail>(`/api/admin/courses/${courseId}`)
 
-const course = computed(() => getCourse(courseId))
-const test = computed(() => getTestByCourse(courseId))
-
-// Локальные редактируемые данные
 const editTitle = ref(course.value?.title || '')
 const editDescription = ref(course.value?.description || '')
 
-// Новый материал
 const showAddMaterial = ref(false)
 const newMaterial = reactive({
-  type: 'text' as 'text' | 'pdf' | 'video',
+  type: 'video' as 'text' | 'pdf' | 'video',
   title: '',
   content: ''
 })
 
 const materialTypeOptions = [
-  { label: 'Текст', value: 'text' },
+  { label: 'Видео (ссылка)', value: 'video' },
   { label: 'PDF (ссылка)', value: 'pdf' },
-  { label: 'Видео (ссылка)', value: 'video' }
+  { label: 'Текст', value: 'text' }
 ]
 
 function materialIcon(type: string) {
@@ -46,36 +50,29 @@ function materialBadgeColor(type: string) {
   }
 }
 
-function saveCourse() {
-  updateCourse(courseId, {
-    title: editTitle.value,
-    description: editDescription.value
+async function saveCourse() {
+  await $fetch(`/api/admin/courses/${courseId}`, {
+    method: 'PUT',
+    body: { title: editTitle.value, description: editDescription.value }
   })
+  await refresh()
   toast.add({ title: 'Курс сохранён', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
-function addMaterial() {
-  if (!newMaterial.title.trim()) return
-  if (!course.value) return
-
-  const maxId = Math.max(0, ...course.value.materials.map(m => m.id))
-  course.value.materials.push({
-    id: maxId + 1,
-    type: newMaterial.type,
-    title: newMaterial.title,
-    content: newMaterial.content
-  })
-
-  newMaterial.type = 'text'
+async function addMaterial() {
+  if (!newMaterial.title.trim() || !newMaterial.content.trim()) return
+  await $fetch(`/api/admin/courses/${courseId}/materials`, { method: 'POST', body: { ...newMaterial } })
+  newMaterial.type = 'video'
   newMaterial.title = ''
   newMaterial.content = ''
   showAddMaterial.value = false
+  await refresh()
   toast.add({ title: 'Материал добавлен', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
-function removeMaterial(materialId: number) {
-  if (!course.value) return
-  course.value.materials = course.value.materials.filter(m => m.id !== materialId)
+async function removeMaterial(materialId: number) {
+  await $fetch(`/api/admin/materials/${materialId}`, { method: 'DELETE' })
+  await refresh()
   toast.add({ title: 'Материал удалён', color: 'success', icon: 'i-lucide-check-circle' })
 }
 </script>
@@ -96,7 +93,6 @@ function removeMaterial(materialId: number) {
     v-else
     class="space-y-6"
   >
-    <!-- Навигация -->
     <div class="flex items-center gap-2">
       <UButton
         to="/admin/courses"
@@ -107,7 +103,6 @@ function removeMaterial(materialId: number) {
       />
     </div>
 
-    <!-- Основная информация -->
     <UCard>
       <template #header>
         <h3 class="font-semibold text-lg">
@@ -143,7 +138,6 @@ function removeMaterial(materialId: number) {
       </div>
     </UCard>
 
-    <!-- Материалы курса -->
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
@@ -205,7 +199,6 @@ function removeMaterial(materialId: number) {
       </div>
     </UCard>
 
-    <!-- Привязанный тест -->
     <UCard>
       <template #header>
         <h3 class="font-semibold text-lg">
@@ -213,19 +206,19 @@ function removeMaterial(materialId: number) {
         </h3>
       </template>
       <div
-        v-if="test"
+        v-if="course.test"
         class="flex items-center justify-between"
       >
         <div>
           <p class="font-medium">
-            {{ test.title }}
+            {{ course.test.title }}
           </p>
           <p class="text-sm text-muted">
-            {{ test.questions.length }} вопросов
+            {{ course.test.questions.length }} вопросов
           </p>
         </div>
         <UButton
-          :to="`/admin/tests/${test.id}`"
+          :to="`/admin/tests/${course.test.id}`"
           label="Редактировать тест"
           icon="i-lucide-pencil"
           variant="outline"
@@ -247,7 +240,6 @@ function removeMaterial(materialId: number) {
       </div>
     </UCard>
 
-    <!-- Модальное окно: добавить материал -->
     <UModal
       v-model:open="showAddMaterial"
       title="Добавить материал"
@@ -282,7 +274,7 @@ function removeMaterial(materialId: number) {
             <UInput
               v-else
               v-model="newMaterial.content"
-              :placeholder="newMaterial.type === 'pdf' ? 'https://example.com/doc.pdf' : 'https://youtube.com/embed/...'"
+              :placeholder="newMaterial.type === 'pdf' ? 'https://example.com/doc.pdf' : 'https://www.youtube.com/embed/...'"
               class="w-full"
             />
           </UFormField>

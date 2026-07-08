@@ -2,7 +2,7 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
-const { user, logout } = useMockAuth()
+const { user, logout } = useAuth()
 
 const navItems: NavigationMenuItem[][] = [
   [
@@ -22,14 +22,19 @@ const navItems: NavigationMenuItem[][] = [
       to: '/admin/tests'
     },
     {
-      label: 'Студенты',
+      label: 'Курсанты',
       icon: 'i-lucide-users',
       to: '/admin/students'
     },
     {
-      label: 'Назначения',
+      label: 'Записи на курсы',
       icon: 'i-lucide-link',
       to: '/admin/assignments'
+    },
+    {
+      label: 'Коды доступа',
+      icon: 'i-lucide-key-round',
+      to: '/admin/pins'
     }
   ]
 ]

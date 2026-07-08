@@ -1,22 +1,19 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'student', title: 'Результат теста' })
 
+interface Result { score: number, total: number, passed: boolean, completedAt: string }
+interface MyCourse { id: number, title: string, result: Result | null }
+
 const route = useRoute()
 const courseId = Number(route.params.id)
-const { user } = useMockAuth()
-const { getCourse, getTestByCourse, getResultForStudentCourse } = useMockData()
 
-const course = computed(() => getCourse(courseId))
-const test = computed(() => getTestByCourse(courseId))
-const result = computed(() => {
-  if (!user.value) return null
-  return getResultForStudentCourse(user.value.id, courseId)
-})
+const { data: myCourses } = await useFetch<MyCourse[]>('/api/my/courses', { default: () => [] })
 
-const scorePercent = computed(() => {
-  if (!result.value) return 0
-  return Math.round((result.value.score / result.value.total) * 100)
-})
+const course = computed(() => myCourses.value.find(c => c.id === courseId) ?? null)
+const result = computed(() => course.value?.result ?? null)
+const scorePercent = computed(() =>
+  result.value ? Math.round((result.value.score / result.value.total) * 100) : 0
+)
 </script>
 
 <template>
@@ -44,7 +41,6 @@ const scorePercent = computed(() => {
     v-else
     class="space-y-6 max-w-2xl mx-auto"
   >
-    <!-- Навигация -->
     <div class="flex items-center gap-2">
       <UButton
         :to="`/student/courses/${courseId}`"
@@ -55,7 +51,6 @@ const scorePercent = computed(() => {
       />
     </div>
 
-    <!-- Основной результат -->
     <UCard>
       <div class="text-center space-y-6 py-4">
         <div
@@ -117,7 +112,6 @@ const scorePercent = computed(() => {
       </div>
     </UCard>
 
-    <!-- Действия -->
     <div class="flex justify-center gap-3">
       <UButton
         to="/student/dashboard"
@@ -133,7 +127,7 @@ const scorePercent = computed(() => {
         icon="i-lucide-refresh-cw"
       />
       <UButton
-        v-if="result.passed"
+        v-else
         :to="`/student/courses/${courseId}`"
         label="Вернуться к курсу"
         icon="i-lucide-book-open"

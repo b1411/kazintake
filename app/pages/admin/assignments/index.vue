@@ -1,67 +1,53 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'admin', title: 'Назначения' })
+definePageMeta({ layout: 'admin', title: 'Записи на курсы' })
 
-const { courses, students, assignments, addAssignment, removeAssignment, getGroups, getStudentsByGroup } = useMockData()
+interface ParticipantRow { id: number, fullName: string, phone: string, courseIds: number[] }
+interface CourseRow { id: number, title: string }
+
 const toast = useToast()
+const { data: participants, refresh } = await useFetch<ParticipantRow[]>('/api/admin/participants', { default: () => [] })
+const { data: courses } = await useFetch<CourseRow[]>('/api/admin/courses', { default: () => [] })
 
-const showAssignModal = ref(false)
-const selectedCourseId = ref<number | null>(null)
-const selectedGroup = ref('')
+const showModal = ref(false)
+const selectedParticipantId = ref<number>()
+const selectedCourseId = ref<number>()
 
-const courseOptions = computed(() =>
-  courses.value.map(c => ({ label: c.title, value: c.id }))
+const participantOptions = computed(() =>
+  participants.value.map(p => ({ label: `${p.fullName} (${p.phone})`, value: p.id }))
+)
+const courseOptions = computed(() => courses.value.map(c => ({ label: c.title, value: c.id })))
+
+// Строки по курсам: кто записан
+const rows = computed(() =>
+  courses.value.map(c => ({
+    course: c,
+    members: participants.value.filter(p => p.courseIds.includes(c.id))
+  })).filter(r => r.members.length > 0)
 )
 
-const groupOptions = computed(() =>
-  getGroups().map(g => ({ label: `${g} (${getStudentsByGroup(g).length} чел.)`, value: g }))
-)
-
-// Данные для таблицы назначений
-const assignmentRows = computed(() =>
-  assignments.value.map((a) => {
-    const course = courses.value.find(c => c.id === a.courseId)
-    return {
-      id: a.id,
-      courseId: a.courseId,
-      courseTitle: course?.title || `Курс #${a.courseId}`,
-      studentCount: a.studentIds.length,
-      assignedAt: a.assignedAt,
-      studentIds: a.studentIds
-    }
-  })
-)
-
-function handleAssign() {
-  if (!selectedCourseId.value || !selectedGroup.value) return
-
-  const groupStudents = getStudentsByGroup(selectedGroup.value)
-  addAssignment(selectedCourseId.value, groupStudents.map(s => s.id))
-
-  toast.add({
-    title: 'Доступ назначен',
-    description: `${groupStudents.length} студентов получили доступ`,
-    color: 'success',
-    icon: 'i-lucide-check-circle'
-  })
-
-  selectedCourseId.value = null
-  selectedGroup.value = ''
-  showAssignModal.value = false
+const expanded = ref<Set<number>>(new Set())
+function toggle(id: number) {
+  if (expanded.value.has(id)) expanded.value.delete(id)
+  else expanded.value.add(id)
 }
 
-function handleRemoveStudent(courseId: number, studentId: number) {
-  removeAssignment(courseId, studentId)
-  toast.add({ title: 'Студент убран из назначения', color: 'success', icon: 'i-lucide-check-circle' })
+async function handleAssign() {
+  if (!selectedParticipantId.value || !selectedCourseId.value) return
+  await $fetch('/api/admin/enrollments', {
+    method: 'POST',
+    body: { participantId: selectedParticipantId.value, courseId: selectedCourseId.value }
+  })
+  selectedParticipantId.value = undefined
+  selectedCourseId.value = undefined
+  showModal.value = false
+  await refresh()
+  toast.add({ title: 'Курсант записан', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
-// Развернутые строки
-const expandedRows = ref<Set<number>>(new Set())
-function toggleRow(id: number) {
-  if (expandedRows.value.has(id)) {
-    expandedRows.value.delete(id)
-  } else {
-    expandedRows.value.add(id)
-  }
+async function handleRemove(participantId: number, courseId: number) {
+  await $fetch('/api/admin/enrollments', { method: 'DELETE', query: { participantId, courseId } })
+  await refresh()
+  toast.add({ title: 'Запись удалена', color: 'success', icon: 'i-lucide-check-circle' })
 }
 </script>
 
@@ -69,20 +55,20 @@ function toggleRow(id: number) {
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-semibold">
-        Назначения курсов ({{ assignments.length }})
+        Записи на курсы
       </h2>
       <UButton
         icon="i-lucide-plus"
-        label="Назначить курс"
-        @click="showAssignModal = true"
+        label="Записать на курс"
+        @click="showModal = true"
       />
     </div>
 
     <div
-      v-if="assignmentRows.length === 0"
+      v-if="rows.length === 0"
       class="text-center py-12 text-muted"
     >
-      Назначений пока нет.
+      Записей пока нет.
     </div>
 
     <div
@@ -90,40 +76,35 @@ function toggleRow(id: number) {
       class="space-y-3"
     >
       <UCard
-        v-for="row in assignmentRows"
-        :key="row.id"
+        v-for="row in rows"
+        :key="row.course.id"
       >
         <div class="space-y-3">
           <div
             class="flex items-center justify-between cursor-pointer"
-            @click="toggleRow(row.id)"
+            @click="toggle(row.course.id)"
           >
             <div class="flex items-center gap-3">
               <UIcon
-                :name="expandedRows.has(row.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
+                :name="expanded.has(row.course.id) ? 'i-lucide-chevron-down' : 'i-lucide-chevron-right'"
                 class="size-5 text-muted"
               />
-              <div>
-                <p class="font-medium">
-                  {{ row.courseTitle }}
-                </p>
-                <p class="text-sm text-muted">
-                  Назначен: {{ row.assignedAt }}
-                </p>
-              </div>
+              <p class="font-medium">
+                {{ row.course.title }}
+              </p>
             </div>
             <UBadge variant="subtle">
-              {{ row.studentCount }} студентов
+              {{ row.members.length }} курсантов
             </UBadge>
           </div>
 
           <div
-            v-if="expandedRows.has(row.id)"
+            v-if="expanded.has(row.course.id)"
             class="pl-8 space-y-2"
           >
             <div
-              v-for="studentId in row.studentIds"
-              :key="studentId"
+              v-for="p in row.members"
+              :key="p.id"
               class="flex items-center justify-between py-1.5"
             >
               <div class="flex items-center gap-2">
@@ -131,14 +112,8 @@ function toggleRow(id: number) {
                   name="i-lucide-user"
                   class="size-4 text-muted"
                 />
-                <span class="text-sm">{{ students.find(s => s.id === studentId)?.name || `#${studentId}` }}</span>
-                <UBadge
-                  variant="subtle"
-                  color="neutral"
-                  size="xs"
-                >
-                  {{ students.find(s => s.id === studentId)?.groupName }}
-                </UBadge>
+                <span class="text-sm">{{ p.fullName }}</span>
+                <span class="text-xs text-muted font-mono">{{ p.phone }}</span>
               </div>
               <UButton
                 icon="i-lucide-x"
@@ -146,7 +121,7 @@ function toggleRow(id: number) {
                 variant="ghost"
                 size="xs"
                 square
-                @click.stop="handleRemoveStudent(row.courseId, studentId)"
+                @click.stop="handleRemove(p.id, row.course.id)"
               />
             </div>
           </div>
@@ -154,14 +129,24 @@ function toggleRow(id: number) {
       </UCard>
     </div>
 
-    <!-- Модальное окно: назначить курс -->
     <UModal
-      v-model:open="showAssignModal"
-      title="Назначить курс группе"
-      description="Выберите курс и группу студентов"
+      v-model:open="showModal"
+      title="Записать курсанта на курс"
+      description="Выберите курсанта и курс"
     >
       <template #body>
         <div class="space-y-4">
+          <UFormField
+            label="Курсант"
+            required
+          >
+            <USelect
+              v-model="selectedParticipantId"
+              :items="participantOptions"
+              placeholder="Выберите курсанта"
+              class="w-full"
+            />
+          </UFormField>
           <UFormField
             label="Курс"
             required
@@ -173,17 +158,6 @@ function toggleRow(id: number) {
               class="w-full"
             />
           </UFormField>
-          <UFormField
-            label="Группа"
-            required
-          >
-            <USelect
-              v-model="selectedGroup"
-              :items="groupOptions"
-              placeholder="Выберите группу"
-              class="w-full"
-            />
-          </UFormField>
         </div>
       </template>
       <template #footer>
@@ -192,10 +166,10 @@ function toggleRow(id: number) {
             label="Отмена"
             color="neutral"
             variant="outline"
-            @click="showAssignModal = false"
+            @click="showModal = false"
           />
           <UButton
-            label="Назначить"
+            label="Записать"
             icon="i-lucide-link"
             @click="handleAssign"
           />

@@ -1,16 +1,15 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'admin', title: 'Редактор теста' })
 
+interface Question { id: number, text: string, options: string[], correctAnswer: number }
+interface TestDetail { id: number, title: string, courseId: number, questions: Question[] }
+
 const route = useRoute()
 const toast = useToast()
 const testId = Number(route.params.id)
 
-const { getTest, updateTest, getCourse } = useMockData()
+const { data: test, refresh } = await useFetch<TestDetail>(`/api/admin/tests/${testId}`)
 
-const test = computed(() => getTest(testId))
-const course = computed(() => test.value ? getCourse(test.value.courseId) : null)
-
-// Добавление вопроса
 const showAddQuestion = ref(false)
 const newQuestion = reactive({
   text: '',
@@ -18,30 +17,31 @@ const newQuestion = reactive({
   correctAnswer: 0
 })
 
-function addQuestion() {
-  if (!test.value) return
+async function addQuestion() {
   if (!newQuestion.text.trim()) return
   const filledOptions = newQuestion.options.filter(o => o.trim())
   if (filledOptions.length < 2) return
 
-  const maxId = Math.max(0, ...test.value.questions.map(q => q.id))
-  test.value.questions.push({
-    id: maxId + 1,
-    text: newQuestion.text,
-    options: filledOptions,
-    correctAnswer: newQuestion.correctAnswer
+  await $fetch(`/api/admin/tests/${testId}/questions`, {
+    method: 'POST',
+    body: {
+      text: newQuestion.text,
+      options: filledOptions,
+      correctAnswer: Math.min(newQuestion.correctAnswer, filledOptions.length - 1)
+    }
   })
 
   newQuestion.text = ''
   newQuestion.options = ['', '', '', '']
   newQuestion.correctAnswer = 0
   showAddQuestion.value = false
+  await refresh()
   toast.add({ title: 'Вопрос добавлен', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
-function removeQuestion(questionId: number) {
-  if (!test.value) return
-  test.value.questions = test.value.questions.filter(q => q.id !== questionId)
+async function removeQuestion(questionId: number) {
+  await $fetch(`/api/admin/questions/${questionId}`, { method: 'DELETE' })
+  await refresh()
   toast.add({ title: 'Вопрос удалён', color: 'success', icon: 'i-lucide-check-circle' })
 }
 
@@ -64,7 +64,6 @@ const correctLabels = ['A', 'B', 'C', 'D']
     v-else
     class="space-y-6"
   >
-    <!-- Навигация -->
     <div class="flex items-center gap-2">
       <UButton
         to="/admin/tests"
@@ -75,21 +74,12 @@ const correctLabels = ['A', 'B', 'C', 'D']
       />
     </div>
 
-    <!-- Информация о тесте -->
     <UCard>
       <template #header>
         <div class="flex items-center justify-between">
-          <div>
-            <h3 class="font-semibold text-lg">
-              {{ test.title }}
-            </h3>
-            <p
-              v-if="course"
-              class="text-sm text-muted"
-            >
-              Курс: {{ course.title }}
-            </p>
-          </div>
+          <h3 class="font-semibold text-lg">
+            {{ test.title }}
+          </h3>
           <UBadge
             variant="subtle"
             color="neutral"
@@ -100,7 +90,6 @@ const correctLabels = ['A', 'B', 'C', 'D']
       </template>
     </UCard>
 
-    <!-- Вопросы -->
     <div class="space-y-4">
       <div class="flex items-center justify-between">
         <h3 class="font-semibold text-lg">
@@ -159,7 +148,6 @@ const correctLabels = ['A', 'B', 'C', 'D']
       </UCard>
     </div>
 
-    <!-- Модальное окно: добавить вопрос -->
     <UModal
       v-model:open="showAddQuestion"
       title="Добавить вопрос"

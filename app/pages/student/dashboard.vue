@@ -1,47 +1,29 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'student', title: 'Мои курсы' })
 
-const { user } = useMockAuth()
-const { getCoursesForStudent, getResultForStudentCourse, getTestByCourse } = useMockData()
-
-const myCourses = computed(() => {
-  if (!user.value) return []
-  return getCoursesForStudent(user.value.id).map((course) => {
-    const result = getResultForStudentCourse(user.value!.id, course.id)
-    const test = getTestByCourse(course.id)
-    return {
-      ...course,
-      result,
-      hasTest: !!test,
-      status: result
-        ? (result.passed ? 'passed' : 'failed')
-        : 'in-progress'
-    }
-  })
-})
-
-function statusLabel(status: string) {
-  switch (status) {
-    case 'passed': return 'Сдан'
-    case 'failed': return 'Не сдан'
-    default: return 'В процессе'
-  }
+interface MyCourse {
+  id: number
+  title: string
+  description: string
+  testId: number | null
+  result: { score: number, total: number, passed: boolean } | null
 }
 
-function statusColor(status: string) {
-  switch (status) {
-    case 'passed': return 'success' as const
-    case 'failed': return 'error' as const
-    default: return 'warning' as const
-  }
-}
+const { user } = useAuth()
+const { data: courses } = await useFetch<MyCourse[]>('/api/my/courses', { default: () => [] })
 
-function statusIcon(status: string) {
-  switch (status) {
-    case 'passed': return 'i-lucide-check-circle'
-    case 'failed': return 'i-lucide-x-circle'
-    default: return 'i-lucide-clock'
-  }
+function status(c: MyCourse) {
+  if (!c.result) return 'in-progress'
+  return c.result.passed ? 'passed' : 'failed'
+}
+function statusLabel(s: string) {
+  return s === 'passed' ? 'Сдан' : s === 'failed' ? 'Не сдан' : 'В процессе'
+}
+function statusColor(s: string) {
+  return s === 'passed' ? 'success' as const : s === 'failed' ? 'error' as const : 'warning' as const
+}
+function statusIcon(s: string) {
+  return s === 'passed' ? 'i-lucide-check-circle' : s === 'failed' ? 'i-lucide-x-circle' : 'i-lucide-clock'
 }
 </script>
 
@@ -52,12 +34,12 @@ function statusIcon(status: string) {
         Добро пожаловать, {{ user?.name }}
       </h2>
       <p class="text-muted">
-        Ваши назначенные курсы и прогресс обучения
+        Ваши курсы и прогресс обучения
       </p>
     </div>
 
     <div
-      v-if="myCourses.length === 0"
+      v-if="courses.length === 0"
       class="text-center py-12"
     >
       <UIcon
@@ -74,7 +56,7 @@ function statusIcon(status: string) {
       class="grid grid-cols-1 md:grid-cols-2 gap-4"
     >
       <UCard
-        v-for="course in myCourses"
+        v-for="course in courses"
         :key="course.id"
         class="hover:shadow-md transition-shadow"
       >
@@ -89,35 +71,25 @@ function statusIcon(status: string) {
               </p>
             </div>
             <UBadge
-              :color="statusColor(course.status)"
-              :icon="statusIcon(course.status)"
+              :color="statusColor(status(course))"
+              :icon="statusIcon(status(course))"
               variant="subtle"
             >
-              {{ statusLabel(course.status) }}
+              {{ statusLabel(status(course)) }}
             </UBadge>
           </div>
 
-          <div class="flex items-center gap-4 text-sm text-muted">
-            <span class="flex items-center gap-1">
-              <UIcon
-                name="i-lucide-file-text"
-                class="size-4"
-              />
-              {{ course.materials.length }} материалов
-            </span>
-            <span
-              v-if="course.hasTest"
-              class="flex items-center gap-1"
-            >
-              <UIcon
-                name="i-lucide-clipboard-check"
-                class="size-4"
-              />
-              Тест
-            </span>
+          <div
+            v-if="course.testId"
+            class="flex items-center gap-1 text-sm text-muted"
+          >
+            <UIcon
+              name="i-lucide-clipboard-check"
+              class="size-4"
+            />
+            Есть тест
           </div>
 
-          <!-- Результат если есть -->
           <div
             v-if="course.result"
             class="flex items-center gap-2"

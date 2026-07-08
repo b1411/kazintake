@@ -1,50 +1,40 @@
 <script setup lang="ts">
-import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
-import { z } from 'zod'
-
 definePageMeta({ layout: false })
 
-const { login } = useMockAuth()
+const { adminLogin, participantLogin } = useAuth()
 const toast = useToast()
-const loginError = ref('')
 
-const fields: AuthFormField[] = [
-  {
-    name: 'phone',
-    type: 'tel',
-    label: 'Номер телефона',
-    placeholder: '+7 (900) 000-0001',
-    required: true
-  },
-  {
-    name: 'password',
-    type: 'password',
-    label: 'Пароль',
-    placeholder: 'Введите пароль',
-    required: true
-  }
+const mode = ref<'participant' | 'admin'>('participant')
+const loginError = ref('')
+const loading = ref(false)
+
+const phone = ref('')
+const pin = ref('')
+const password = ref('')
+
+const modeItems = [
+  { label: 'Курсант', value: 'participant' as const },
+  { label: 'Администратор', value: 'admin' as const }
 ]
 
-const schema = z.object({
-  phone: z.string().min(1, 'Введите номер телефона'),
-  password: z.string().min(1, 'Введите пароль')
-})
-
-type Schema = z.output<typeof schema>
-
-function onSubmit(payload: FormSubmitEvent<Schema>) {
+async function onSubmit() {
   loginError.value = ''
-  const result = login(payload.data.phone, payload.data.password)
-  if (result.success) {
-    const { user } = useMockAuth()
-    toast.add({ title: 'Добро пожаловать!', description: `Вы вошли как ${user.value?.name}`, color: 'success', icon: 'i-lucide-check-circle' })
-    if (user.value?.role === 'admin') {
-      navigateTo('/admin')
+  loading.value = true
+  try {
+    if (mode.value === 'participant') {
+      await participantLogin(phone.value, pin.value)
+      toast.add({ title: 'Добро пожаловать!', color: 'success', icon: 'i-lucide-check-circle' })
+      await navigateTo('/student/dashboard')
     } else {
-      navigateTo('/student/dashboard')
+      await adminLogin(phone.value, password.value)
+      toast.add({ title: 'Вход выполнен', color: 'success', icon: 'i-lucide-check-circle' })
+      await navigateTo('/admin')
     }
-  } else {
-    loginError.value = result.error || 'Ошибка авторизации'
+  } catch (e) {
+    const err = e as { statusMessage?: string, data?: { statusMessage?: string } }
+    loginError.value = err.data?.statusMessage || err.statusMessage || 'Ошибка авторизации'
+  } finally {
+    loading.value = false
   }
 }
 </script>
@@ -57,39 +47,86 @@ function onSubmit(payload: FormSubmitEvent<Schema>) {
       </div>
 
       <UPageCard>
-        <UAuthForm
-          :schema="schema"
-          :fields="fields"
-          title="Вход в систему"
-          description="Введите ваши учётные данные для доступа к платформе."
-          icon="i-lucide-lock"
-          :submit="{ label: 'Войти' }"
-          @submit="onSubmit"
-        >
-          <template
-            v-if="loginError"
-            #validation
+        <div class="space-y-5">
+          <div class="text-center space-y-1">
+            <h1 class="text-xl font-semibold">
+              Вход в систему
+            </h1>
+            <p class="text-sm text-muted">
+              Обучающая платформа KazInTake
+            </p>
+          </div>
+
+          <UTabs
+            v-model="mode"
+            :items="modeItems"
+            :content="false"
+            class="w-full"
+          />
+
+          <form
+            class="space-y-4"
+            @submit.prevent="onSubmit"
           >
+            <UFormField
+              label="Номер телефона"
+              required
+            >
+              <UInput
+                v-model="phone"
+                type="tel"
+                placeholder="+7 777 000 0000"
+                class="w-full"
+              />
+            </UFormField>
+
+            <UFormField
+              v-if="mode === 'participant'"
+              label="PIN-код курса"
+              required
+            >
+              <UInput
+                v-model="pin"
+                placeholder="6-значный код"
+                class="w-full"
+              />
+            </UFormField>
+
+            <UFormField
+              v-else
+              label="Пароль"
+              required
+            >
+              <UInput
+                v-model="password"
+                type="password"
+                placeholder="Введите пароль"
+                class="w-full"
+              />
+            </UFormField>
+
             <UAlert
+              v-if="loginError"
               color="error"
               icon="i-lucide-alert-circle"
               :title="loginError"
             />
-          </template>
 
-          <template #footer>
-            <div class="space-y-3 text-sm text-muted">
-              <USeparator />
-              <p class="font-medium">
-                Тестовые учётные записи:
-              </p>
-              <div class="space-y-1">
-                <p><strong>Админ:</strong> +7 (900) 000-0001 / admin123</p>
-                <p><strong>Студент:</strong> +7 (900) 111-0001 / student1</p>
-              </div>
-            </div>
-          </template>
-        </UAuthForm>
+            <UButton
+              type="submit"
+              block
+              label="Войти"
+              :loading="loading"
+            />
+          </form>
+
+          <div
+            v-if="mode === 'participant'"
+            class="text-xs text-muted text-center"
+          >
+            PIN-код курса выдаёт администратор. Код обновляется ежемесячно.
+          </div>
+        </div>
       </UPageCard>
     </div>
   </div>

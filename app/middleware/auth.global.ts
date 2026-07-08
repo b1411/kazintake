@@ -1,23 +1,21 @@
-// Middleware: защита роутов по авторизации
+// Middleware: защита роутов по сессии (nuxt-auth-utils)
 export default defineNuxtRouteMiddleware((to) => {
-  const { isAuthenticated, isAdmin, isStudent } = useMockAuth()
+  const { loggedIn, user } = useUserSession()
 
-  // Публичные страницы
   const publicPages = ['/login', '/', '/about', '/programs']
   if (publicPages.includes(to.path)) return
 
-  // Не авторизован — на логин
-  if (!isAuthenticated.value) {
+  if (!loggedIn.value) {
     return navigateTo('/login')
   }
 
-  // Защита /admin/* — только для администратора
-  if (to.path.startsWith('/admin') && !isAdmin.value) {
+  // /admin/* — только администратор
+  if (to.path.startsWith('/admin') && user.value?.role !== 'admin') {
     return navigateTo('/student/dashboard')
   }
 
-  // Защита /student/* — только для студентов
-  if (to.path.startsWith('/student') && !isStudent.value) {
+  // /student/* — только курсант
+  if (to.path.startsWith('/student') && user.value?.role !== 'participant') {
     return navigateTo('/admin')
   }
 })

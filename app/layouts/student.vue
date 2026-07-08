@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 
-const { user, logout } = useMockAuth()
+const { user, logout } = useAuth()
 const route = useRoute()
 
 const navItems: NavigationMenuItem[][] = [

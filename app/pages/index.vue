@@ -1,10 +1,10 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-const { isAuthenticated, isAdmin } = useMockAuth()
+const { loggedIn, isAdmin } = useAuth()
 
 // Редирект авторизованных пользователей
-if (import.meta.client && isAuthenticated.value) {
+if (import.meta.client && loggedIn.value) {
   navigateTo(isAdmin.value ? '/admin' : '/student/dashboard')
 }
 
@@ -127,15 +127,46 @@ const partners = [
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-8 text-xs">
           <div class="hidden sm:flex items-center gap-4">
-            <a href="https://egov.kz" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">eGov.kz</a>
-            <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. просвещения</a>
-            <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. здравоохранения</a>
-            <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">Мин. труда</a>
-            <a href="https://www.gov.kz/memleket/entities/emer" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors">МЧС РК</a>
+            <a
+              href="https://egov.kz"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >eGov.kz</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/edu"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >Мин. просвещения</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/dsm"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >Мин. здравоохранения</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/enbek"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >Мин. труда</a>
+            <a
+              href="https://www.gov.kz/memleket/entities/emer"
+              target="_blank"
+              rel="noopener"
+              class="text-gray-400 hover:text-white transition-colors"
+            >МЧС РК</a>
           </div>
           <div class="flex items-center gap-3 text-gray-400 sm:ml-auto">
-            <UIcon name="i-lucide-phone" class="size-3" />
-            <a href="tel:+77719292212" class="hover:text-white transition-colors">+7 (771) 929-22-12</a>
+            <UIcon
+              name="i-lucide-phone"
+              class="size-3"
+            />
+            <a
+              href="tel:+77719292212"
+              class="hover:text-white transition-colors"
+            >+7 (771) 929-22-12</a>
           </div>
         </div>
       </div>
@@ -145,8 +176,14 @@ const partners = [
     <header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center gap-2.5">
-            <UIcon name="i-lucide-graduation-cap" class="size-7 text-primary" />
+          <NuxtLink
+            to="/"
+            class="flex items-center gap-2.5"
+          >
+            <UIcon
+              name="i-lucide-graduation-cap"
+              class="size-7 text-primary"
+            />
             <span class="font-bold text-lg tracking-tight">KAZINTAKE</span>
           </NuxtLink>
 
@@ -188,8 +225,15 @@ const partners = [
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32">
           <div class="text-center max-w-4xl mx-auto">
-            <UBadge variant="subtle" size="md" class="mb-6 bg-white/15 text-white border-white/20">
-              <UIcon name="i-lucide-shield" class="size-3.5 mr-1" />
+            <UBadge
+              variant="subtle"
+              size="md"
+              class="mb-6 bg-white/15 text-white border-white/20"
+            >
+              <UIcon
+                name="i-lucide-shield"
+                class="size-3.5 mr-1"
+              />
               Квалификационная Комиссия Республики Казахстан
             </UBadge>
 
@@ -251,7 +295,9 @@ const partners = [
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <p class="text-sm font-semibold text-primary mb-2">О компании</p>
+              <p class="text-sm font-semibold text-primary mb-2">
+                О компании
+              </p>
               <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
                 Квалификационная Комиссия
               </h2>
@@ -280,25 +326,44 @@ const partners = [
                   src="/ermek.jpg"
                   alt="Курмансеитов Ермек"
                   class="size-16 rounded-full object-cover shrink-0"
-                />
+                >
                 <div>
-                  <p class="font-semibold text-lg text-gray-900 dark:text-white">Курмансеитов Ермек</p>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Директор KAZINTAKE&amp;SERVICE</p>
+                  <p class="font-semibold text-lg text-gray-900 dark:text-white">
+                    Курмансеитов Ермек
+                  </p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Директор KAZINTAKE&amp;SERVICE
+                  </p>
                 </div>
               </div>
               <USeparator />
               <div class="mt-5 space-y-3 text-sm text-gray-600 dark:text-gray-400">
                 <div class="flex items-center gap-3">
-                  <UIcon name="i-lucide-map-pin" class="size-4 text-primary shrink-0" />
+                  <UIcon
+                    name="i-lucide-map-pin"
+                    class="size-4 text-primary shrink-0"
+                  />
                   <span>г. Алматы, проспект Абая, 151/115</span>
                 </div>
                 <div class="flex items-center gap-3">
-                  <UIcon name="i-lucide-phone" class="size-4 text-primary shrink-0" />
-                  <a href="tel:+77719292212" class="hover:text-primary transition-colors">+7 (771) 929-22-12</a>
+                  <UIcon
+                    name="i-lucide-phone"
+                    class="size-4 text-primary shrink-0"
+                  />
+                  <a
+                    href="tel:+77719292212"
+                    class="hover:text-primary transition-colors"
+                  >+7 (771) 929-22-12</a>
                 </div>
                 <div class="flex items-center gap-3">
-                  <UIcon name="i-lucide-mail" class="size-4 text-primary shrink-0" />
-                  <a href="mailto:kazintake@kazintake.kz" class="hover:text-primary transition-colors">kazintake@kazintake.kz</a>
+                  <UIcon
+                    name="i-lucide-mail"
+                    class="size-4 text-primary shrink-0"
+                  />
+                  <a
+                    href="mailto:kazintake@kazintake.kz"
+                    class="hover:text-primary transition-colors"
+                  >kazintake@kazintake.kz</a>
                 </div>
               </div>
             </div>
@@ -307,10 +372,15 @@ const partners = [
       </section>
 
       <!-- Programs -->
-      <section id="programs" class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
+      <section
+        id="programs"
+        class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900"
+      >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12">
-            <p class="text-sm font-semibold text-primary mb-2">Программы обучения</p>
+            <p class="text-sm font-semibold text-primary mb-2">
+              Программы обучения
+            </p>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
               Направления деятельности
             </h2>
@@ -337,7 +407,12 @@ const partners = [
             >
               <template #header>
                 <div class="px-6 pt-5 pb-0">
-                  <UBadge variant="subtle" size="xs">{{ program.subtitle }}</UBadge>
+                  <UBadge
+                    variant="subtle"
+                    size="xs"
+                  >
+                    {{ program.subtitle }}
+                  </UBadge>
                 </div>
               </template>
             </UPageCard>
@@ -391,7 +466,9 @@ const partners = [
       <section class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12">
-            <p class="text-sm font-semibold text-primary mb-2">Отзывы</p>
+            <p class="text-sm font-semibold text-primary mb-2">
+              Отзывы
+            </p>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
               Что говорят наши клиенты
             </h2>
@@ -422,8 +499,12 @@ const partners = [
                   <span class="text-sm font-bold text-primary">{{ review.name.charAt(0) }}</span>
                 </div>
                 <div>
-                  <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ review.name }}</p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">{{ review.role }}</p>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                    {{ review.name }}
+                  </p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
+                    {{ review.role }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -435,7 +516,9 @@ const partners = [
       <section class="py-16 sm:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12">
-            <p class="text-sm font-semibold text-primary mb-2">Благодарности</p>
+            <p class="text-sm font-semibold text-primary mb-2">
+              Благодарности
+            </p>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
               Благодарственные письма
             </h2>
@@ -451,10 +534,17 @@ const partners = [
               class="group relative aspect-[3/4] rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center gap-3 hover:border-primary/50 transition-colors"
             >
               <div class="size-14 rounded-xl bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
-                <UIcon name="i-lucide-file-text" class="size-7 text-gray-400 dark:text-gray-500" />
+                <UIcon
+                  name="i-lucide-file-text"
+                  class="size-7 text-gray-400 dark:text-gray-500"
+                />
               </div>
-              <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">Благодарственное письмо {{ i }}</p>
-              <p class="text-xs text-gray-400 dark:text-gray-600">Скоро будет добавлено</p>
+              <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">
+                Благодарственное письмо {{ i }}
+              </p>
+              <p class="text-xs text-gray-400 dark:text-gray-600">
+                Скоро будет добавлено
+              </p>
             </div>
           </div>
         </div>
@@ -464,7 +554,9 @@ const partners = [
       <section class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12">
-            <p class="text-sm font-semibold text-primary mb-2">Партнёры</p>
+            <p class="text-sm font-semibold text-primary mb-2">
+              Партнёры
+            </p>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
               С нами работают
             </h2>
@@ -481,9 +573,14 @@ const partners = [
             >
               <div>
                 <div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <UIcon name="i-lucide-building-2" class="size-5 text-primary" />
+                  <UIcon
+                    name="i-lucide-building-2"
+                    class="size-5 text-primary"
+                  />
                 </div>
-                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ partner }}</p>
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  {{ partner }}
+                </p>
               </div>
             </div>
           </div>
@@ -527,10 +624,15 @@ const partners = [
       </section>
 
       <!-- Contacts -->
-      <section id="contacts" class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
+      <section
+        id="contacts"
+        class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900"
+      >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12">
-            <p class="text-sm font-semibold text-primary mb-2">Связаться с нами</p>
+            <p class="text-sm font-semibold text-primary mb-2">
+              Связаться с нами
+            </p>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
               Контакты
             </h2>
@@ -571,7 +673,10 @@ const partners = [
         <div class="grid sm:grid-cols-3 gap-8 mb-8">
           <div>
             <div class="flex items-center gap-2 mb-3">
-              <UIcon name="i-lucide-graduation-cap" class="size-5 text-primary" />
+              <UIcon
+                name="i-lucide-graduation-cap"
+                class="size-5 text-primary"
+              />
               <span class="font-bold">KAZINTAKE&amp;SERVICE</span>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
@@ -579,16 +684,40 @@ const partners = [
             </p>
           </div>
           <div>
-            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Гос. ресурсы</h4>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">
+              Гос. ресурсы
+            </h4>
             <div class="space-y-2 text-sm">
-              <a href="https://egov.kz" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">eGov.kz</a>
-              <a href="https://www.gov.kz/memleket/entities/edu" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство просвещения РК</a>
-              <a href="https://www.gov.kz/memleket/entities/dsm" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство здравоохранения РК</a>
-              <a href="https://www.gov.kz/memleket/entities/enbek" target="_blank" rel="noopener" class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Министерство труда и соцзащиты РК</a>
+              <a
+                href="https://egov.kz"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >eGov.kz</a>
+              <a
+                href="https://www.gov.kz/memleket/entities/edu"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >Министерство просвещения РК</a>
+              <a
+                href="https://www.gov.kz/memleket/entities/dsm"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >Министерство здравоохранения РК</a>
+              <a
+                href="https://www.gov.kz/memleket/entities/enbek"
+                target="_blank"
+                rel="noopener"
+                class="block text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+              >Министерство труда и соцзащиты РК</a>
             </div>
           </div>
           <div>
-            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">Лицензии и права</h4>
+            <h4 class="font-semibold text-sm text-gray-900 dark:text-white mb-3">
+              Лицензии и права
+            </h4>
             <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
               <p>Деятельность осуществляется в соответствии с законодательством РК</p>
               <p>Сертификаты и удостоверения государственного образца</p>
