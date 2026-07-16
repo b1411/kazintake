@@ -85,7 +85,7 @@ const reviews = [
   {
     name: 'Асылбек Тулегенов',
     role: 'Директор, ТОО «СтройМонтажГрупп»',
-    text: 'Благодаря KAZINTAKE&SERVICE наши сотрудники прошли обучение по охране труда и пожарной безопасности в кратчайшие сроки. Удобная платформа и профессиональный подход.',
+    text: 'Благодаря Квалификационной Комиссии наши сотрудники прошли обучение по охране труда и пожарной безопасности в кратчайшие сроки. Удобная платформа и профессиональный подход.',
     rating: 5
   },
   {
@@ -164,9 +164,14 @@ const partners = [
               class="size-3"
             />
             <a
-              href="tel:+77719292212"
+              href="tel:+77777731238"
               class="hover:text-white transition-colors"
-            >+7 (771) 929-22-12</a>
+            >+7 (777) 773-12-38</a>
+            <span class="text-gray-600">/</span>
+            <a
+              href="tel:+77753528232"
+              class="hover:text-white transition-colors"
+            >+7 (775) 352-82-32</a>
           </div>
         </div>
       </div>
@@ -225,25 +230,13 @@ const partners = [
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32">
           <div class="text-center max-w-4xl mx-auto">
-            <UBadge
-              variant="subtle"
-              size="md"
-              class="mb-6 bg-white/15 text-white border-white/20"
-            >
-              <UIcon
-                name="i-lucide-shield"
-                class="size-3.5 mr-1"
-              />
-              Квалификационная Комиссия Республики Казахстан
-            </UBadge>
-
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
-              KAZINTAKE
-              <span class="text-white/70">&amp;</span>SERVICE
+              Квалификационная Комиссия
+              <span class="block text-white/80">Республики Казахстан</span>
             </h1>
 
             <p class="mt-6 text-lg sm:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              <span class="font-semibold text-white">Квалификационная Комиссия</span>, предоставляющая услуги по обеспечению
+              Предоставляющая услуги по обеспечению
               <span class="border-b border-white/40">безопасности и охраны труда</span>,
               <span class="border-b border-white/40">пожарной безопасности</span>,
               <span class="border-b border-white/40">гигиенического обучения</span>,
@@ -294,45 +287,19 @@ const partners = [
       <section class="py-16 sm:py-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <p class="text-sm font-semibold text-primary mb-2">
-                О компании
-              </p>
-              <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
-                Квалификационная Комиссия
-              </h2>
-              <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
-                KAZINTAKE&amp;SERVICE осуществляет свою деятельность в соответствии с законами Республики Казахстан,
-                иными нормативными правовыми актами, Регламентом Квалификационной Комиссией, а также Уставом.
-              </p>
-              <p class="mt-3 text-gray-600 dark:text-gray-400 leading-relaxed">
-                Мы обеспечиваем полный цикл корпоративного обучения — от разработки учебных программ
-                до аттестации сотрудников и выдачи документов государственного образца.
-              </p>
-              <UButton
-                to="/about"
-                label="Подробнее о компании"
-                trailing-icon="i-lucide-arrow-right"
-                variant="outline"
-                color="neutral"
-                size="lg"
-                class="mt-6"
-              />
-            </div>
-
-            <div class="p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
-              <div class="flex items-center gap-4 mb-5">
+            <div class="order-2 md:order-1 p-6 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
+              <div class="flex items-center gap-5 mb-5">
                 <img
                   src="/ermek.jpg"
                   alt="Курмансеитов Ермек"
-                  class="size-16 rounded-full object-cover shrink-0"
+                  class="size-28 sm:size-32 rounded-full object-cover shrink-0"
                 >
                 <div>
                   <p class="font-semibold text-lg text-gray-900 dark:text-white">
                     Курмансеитов Ермек
                   </p>
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Директор KAZINTAKE&amp;SERVICE
+                    Председатель Квалификационной Комиссии
                   </p>
                 </div>
               </div>
@@ -350,10 +317,16 @@ const partners = [
                     name="i-lucide-phone"
                     class="size-4 text-primary shrink-0"
                   />
-                  <a
-                    href="tel:+77719292212"
-                    class="hover:text-primary transition-colors"
-                  >+7 (771) 929-22-12</a>
+                  <div class="flex flex-col">
+                    <a
+                      href="tel:+77777731238"
+                      class="hover:text-primary transition-colors"
+                    >+7 (777) 773-12-38</a>
+                    <a
+                      href="tel:+77753528232"
+                      class="hover:text-primary transition-colors"
+                    >+7 (775) 352-82-32</a>
+                  </div>
                 </div>
                 <div class="flex items-center gap-3">
                   <UIcon
@@ -366,6 +339,32 @@ const partners = [
                   >kazintake@kazintake.kz</a>
                 </div>
               </div>
+            </div>
+
+            <div class="order-1 md:order-2">
+              <p class="text-sm font-semibold text-primary mb-2">
+                О компании
+              </p>
+              <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                Квалификационная Комиссия
+              </h2>
+              <p class="mt-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+                Квалификационная Комиссия осуществляет свою деятельность в соответствии с законами Республики Казахстан,
+                иными нормативными правовыми актами, Регламентом Квалификационной Комиссией, а также Уставом.
+              </p>
+              <p class="mt-3 text-gray-600 dark:text-gray-400 leading-relaxed">
+                Мы обеспечиваем полный цикл корпоративного обучения — от разработки учебных программ
+                до аттестации сотрудников и выдачи документов государственного образца.
+              </p>
+              <UButton
+                to="/about"
+                label="Подробнее о компании"
+                trailing-icon="i-lucide-arrow-right"
+                variant="outline"
+                color="neutral"
+                size="lg"
+                class="mt-6"
+              />
             </div>
           </div>
         </div>
@@ -561,7 +560,7 @@ const partners = [
               С нами работают
             </h2>
             <p class="mt-4 text-gray-600 dark:text-gray-400">
-              Компании и организации, которые выбрали KAZINTAKE&amp;SERVICE.
+              Компании и организации, которые выбрали Квалификационную Комиссию.
             </p>
           </div>
 
@@ -610,8 +609,8 @@ const partners = [
                   class="light"
                 />
                 <UButton
-                  to="tel:+77719292212"
-                  label="+7 (771) 929-22-12"
+                  to="tel:+77777731238"
+                  label="+7 (777) 773-12-38"
                   icon="i-lucide-phone"
                   size="xl"
                   variant="outline"
@@ -649,9 +648,9 @@ const partners = [
             <UPageCard
               icon="i-lucide-phone"
               title="Телефон"
-              description="+7 (771) 929-22-12"
+              description="+7 (777) 773-12-38, +7 (775) 352-82-32"
               variant="subtle"
-              to="tel:+77719292212"
+              to="tel:+77777731238"
               class="bg-white dark:bg-gray-950"
             />
             <UPageCard
@@ -677,10 +676,13 @@ const partners = [
                 name="i-lucide-graduation-cap"
                 class="size-5 text-primary"
               />
-              <span class="font-bold">KAZINTAKE&amp;SERVICE</span>
+              <span class="font-bold">Квалификационная Комиссия</span>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-              Квалификационная Комиссия, предоставляющая услуги по обеспечению безопасности и охраны труда в организациях Республики Казахстан.
+              Обучение, проверка знаний и аттестация работников и руководителей организаций Республики Казахстан: безопасность и охрана труда, пожарно-технический минимум, санитарно-эпидемиологическая защищённость, антитеррористическая защита, первая доврачебная помощь, противодействие коррупции, профилактика буллинга, согласительные комиссии по трудовым спорам.
+            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mt-3">
+              Разработка и экспертиза документации по охране труда, оценка рисков, консультации по трудовому законодательству, выдача сертификатов и удостоверений государственного образца.
             </p>
           </div>
           <div>
@@ -727,7 +729,7 @@ const partners = [
         <USeparator />
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
           <p class="text-xs text-gray-400 dark:text-gray-500">
-            &copy; {{ new Date().getFullYear() }} KAZINTAKE&amp;SERVICE. Все права защищены.
+            &copy; {{ new Date().getFullYear() }} Квалификационная Комиссия. Все права защищены.
           </p>
           <div class="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
             <span>ИИН/БИН организации</span>

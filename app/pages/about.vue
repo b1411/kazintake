@@ -8,7 +8,7 @@ const navLinks = [
 ]
 
 const milestones = [
-  { year: '2015', text: 'Основание компании KAZINTAKE&SERVICE в г. Алматы' },
+  { year: '2015', text: 'Основание Квалификационной Комиссии в г. Алматы' },
   { year: '2016', text: 'Аккредитация по программам ПТМ и БиОТ' },
   { year: '2018', text: 'Расширение программ: Антитеррор, Согласительная комиссия' },
   { year: '2020', text: 'Переход на онлайн-формат обучения, запуск LMS-платформы' },
@@ -43,7 +43,7 @@ const _team = [
   {
     name: 'Курмансеитов Ермек',
     role: 'Директор',
-    description: 'Руководитель KAZINTAKE&SERVICE. Координация деятельности Квалификационной Комиссии.'
+    description: 'Руководитель Квалификационной Комиссии. Координация деятельности комиссии.'
   }
 ]
 </script>
@@ -92,9 +92,14 @@ const _team = [
               class="size-3"
             />
             <a
-              href="tel:+77719292212"
+              href="tel:+77777731238"
               class="hover:text-white transition-colors"
-            >+7 (771) 929-22-12</a>
+            >+7 (777) 773-12-38</a>
+            <span class="text-gray-600">/</span>
+            <a
+              href="tel:+77753528232"
+              class="hover:text-white transition-colors"
+            >+7 (775) 352-82-32</a>
           </div>
         </div>
       </div>
@@ -163,7 +168,7 @@ const _team = [
             О компании
           </h1>
           <p class="mt-4 text-lg text-white/80 max-w-3xl mx-auto">
-            KAZINTAKE&amp;SERVICE — Квалификационная Комиссия Республики Казахстан
+            Квалификационная Комиссия Республики Казахстан
           </p>
         </div>
       </section>
@@ -187,7 +192,7 @@ const _team = [
                         Курмансеитов Ермек
                       </h3>
                       <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        Директор KAZINTAKE&amp;SERVICE
+                        Председатель Квалификационной Комиссии
                       </p>
                     </div>
                   </div>
@@ -208,10 +213,16 @@ const _team = [
                           name="i-lucide-phone"
                           class="size-4 text-primary shrink-0"
                         />
-                        <a
-                          href="tel:+77719292212"
-                          class="hover:text-primary transition-colors"
-                        >+7 (771) 929-22-12</a>
+                        <div class="flex flex-col">
+                          <a
+                            href="tel:+77777731238"
+                            class="hover:text-primary transition-colors"
+                          >+7 (777) 773-12-38</a>
+                          <a
+                            href="tel:+77753528232"
+                            class="hover:text-primary transition-colors"
+                          >+7 (775) 352-82-32</a>
+                        </div>
                       </div>
                       <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                         <UIcon
@@ -228,7 +239,7 @@ const _team = [
                 </div>
 
                 <UButton
-                  to="tel:+77719292212"
+                  to="tel:+77777731238"
                   label="Связаться с нами"
                   icon="i-lucide-phone"
                   size="lg"
@@ -245,7 +256,7 @@ const _team = [
                 </h2>
                 <div class="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
                   <p>
-                    <strong>KAZINTAKE&amp;SERVICE</strong> — Квалификационная Комиссия, предоставляющая услуги, связанные
+                    <strong>Квалификационная Комиссия</strong> — предоставляет услуги, связанные
                     с обеспечением безопасности и охраны труда, пожарной безопасности, гигиенического обучения,
                     противодействия терроризму, а также согласительной комиссии в организациях Республики Казахстан.
                   </p>
@@ -388,8 +399,8 @@ const _team = [
               </p>
               <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <UButton
-                  to="tel:+77719292212"
-                  label="+7 (771) 929-22-12"
+                  to="tel:+77777731238"
+                  label="+7 (777) 773-12-38"
                   icon="i-lucide-phone"
                   size="xl"
                   color="neutral"
@@ -421,7 +432,7 @@ const _team = [
                 name="i-lucide-graduation-cap"
                 class="size-5 text-primary"
               />
-              <span class="font-bold">KAZINTAKE&amp;SERVICE</span>
+              <span class="font-bold">Квалификационная Комиссия</span>
             </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
               Квалификационная Комиссия, предоставляющая услуги по обеспечению безопасности и охраны труда в организациях Республики Казахстан.
@@ -471,7 +482,7 @@ const _team = [
         <USeparator />
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
           <p class="text-xs text-gray-400 dark:text-gray-500">
-            &copy; {{ new Date().getFullYear() }} KAZINTAKE&amp;SERVICE. Все права защищены.
+            &copy; {{ new Date().getFullYear() }} Квалификационная Комиссия. Все права защищены.
           </p>
           <div class="flex items-center gap-4 text-xs text-gray-400 dark:text-gray-500">
             <span>ИИН/БИН организации</span>
