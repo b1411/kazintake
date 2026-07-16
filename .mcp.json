@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "database": {
+      "type": "stdio",
+      "command": "tursodb",
+      "args": [
+        "libsql://kazintake-stardust.aws-eu-west-1.turso.io",
+        "--mcp"
+      ],
+      "env": {}
+    }
+  }
+}
